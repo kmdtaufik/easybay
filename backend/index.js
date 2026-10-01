@@ -6,6 +6,7 @@ import { auth, db } from "./auth.js";
 import mongoose from "mongoose";
 
 import productRoutes from "./routes/products.js";
+import cartRoutes from "./routes/cart.js";
 
 dotenv.config();
 
@@ -22,8 +23,9 @@ app.use(
 
 app.use(express.json());
 
-// Mount the products router
+// Mount routers
 app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.post("/api/onboarding", async (req, res) => {
   try {
