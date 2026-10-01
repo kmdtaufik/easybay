@@ -1,31 +1,8 @@
 import express from "express";
 import Product from "../models/Product.js";
-import { auth } from "../auth.js";
+import { requireAuth, requireVendor } from "../middleware/auth.js";
 
 const router = express.Router();
-
-// Middleware to check authentication and attach session to req
-const requireAuth = async (req, res, next) => {
-  try {
-    const session = await auth.api.getSession({ headers: req.headers });
-    if (!session) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-    req.session = session;
-    next();
-  } catch (error) {
-    console.error("Auth middleware error:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-// Middleware to check if user is a vendor
-const requireVendor = (req, res, next) => {
-  if (req.session?.user?.role !== "vendor") {
-    return res.status(403).json({ error: "Forbidden: Vendor access required" });
-  }
-  next();
-};
 
 // GET all products
 router.get("/", async (req, res) => {
