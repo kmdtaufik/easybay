@@ -13,14 +13,30 @@ export const connectDB = async () => {
 
 await connectDB();
 const client = mongoose.connection.getClient();
-const db = client.db();
+export const db = client.db();
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
   }),
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        input: false,
+      },
+    },
+  },
+  trustedOrigins: ["http://localhost:5173"],
   emailAndPassword: {
     enabled: true,
+  },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    },
   },
   advanced: {
     database: {
