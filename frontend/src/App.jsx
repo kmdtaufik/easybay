@@ -12,6 +12,13 @@ import Orders from "./pages/(customer)/orders";
 import Wishlist from "./pages/(customer)/wishlist";
 import Settings from "./pages/(customer)/settings";
 
+// Vendor Dashboard
+import VendorLayout from "./pages/(vendor)/layout";
+import VendorDashboard from "./pages/(vendor)/dashboard";
+import VendorProducts from "./pages/(vendor)/products";
+import VendorOrders from "./pages/(vendor)/orders";
+import VendorSettings from "./pages/(vendor)/settings";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -31,6 +38,15 @@ export default function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="settings" element={<Settings />} />
+        </Route>
+
+        {/* Protected Dashboard Route (Vendor) */}
+        <Route path="/vendor" element={<VendorLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<VendorDashboard />} />
+          <Route path="products" element={<VendorProducts />} />
+          <Route path="orders" element={<VendorOrders />} />
+          <Route path="settings" element={<VendorSettings />} />
         </Route>
       </Routes>
     </BrowserRouter>
