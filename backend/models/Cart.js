@@ -17,14 +17,14 @@ const cartItemSchema = new mongoose.Schema({
 const cartSchema = new mongoose.Schema(
   {
     userId: {
-      type: String, // Matches Better Auth user ID format
+      type: String,
       required: true,
       index: true,
-      unique: true, // One cart per user
+      unique: true, //One Cart per user
     },
     items: [cartItemSchema],
   },
   { timestamps: true }
 );
-
+cartItemSchema
 export const Cart = mongoose.model("Cart", cartSchema);
