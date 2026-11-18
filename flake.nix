@@ -6,17 +6,12 @@
     flake-utils = {
       url = "github:numtide/flake-utils";
     };
-    antigravity-nix = {
-      url = "github:jacopone/antigravity-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
     self,
     nixpkgs,
     flake-utils,
-    antigravity-nix,
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
@@ -26,25 +21,9 @@
         };
       in {
         devShells.default = pkgs.mkShell {
-          # nativeBuildInputs are tools executed on the host machine during the build
           nativeBuildInputs = with pkgs; [
-            pkg-config
-            wrapGAppsHook4
-            cargo
-            rustc
-            rustup
-            # cargo-tauri
             bun
             nodejs # Required by Tauri's internal build scripts even when using Bun
-            antigravity-nix.packages.${system}.google-antigravity-ide
-          ];
-
-          # buildInputs are libraries linked against the final binary
-          buildInputs = with pkgs; [
-            librsvg
-            webkitgtk_4_1
-            openssl
-            libayatana-appindicator
           ];
 
           shellHook = ''

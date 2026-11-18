@@ -1,40 +1,36 @@
 import { auth } from "../auth.js";
 
-// Middleware to check authentication and attach session to req
+// Middleware to check authentication and attach session & user to req
 export const requireAuth = async (req, res, next) => {
   try {
     const session = await auth.api.getSession({ headers: req.headers });
-    if (!session) {
-      return res.status(401).json({ error: "Unauthorized" });
+    if (!session || !session.user) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
     }
     req.session = session;
+    req.user = session.user;
     next();
   } catch (error) {
     console.error("Auth middleware error:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
-// Middleware to check if user is a vendor
-export const requireVendor = (req, res, next) => {
-  if (req.session?.user?.role !== "vendor") {
-    return res.status(403).json({ error: "Forbidden: Vendor access required" });
-  }
-  next();
+// Configurable Role-Based Access Control (RBAC) middleware
+export const requireRole = (allowedRoles = []) => {
+  return (req, res, next) => {
+    const role = req.user?.role || req.session?.user?.role;
+    if (!role || !allowedRoles.includes(role)) {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden: Insufficient privileges",
+      });
+    }
+    next();
+  };
 };
 
-// Middleware to check if user is a customer
-export const requireCustomer = (req, res, next) => {
-  if (req.session?.user?.role !== "customer") {
-    return res.status(403).json({ error: "Forbidden: Customer access required" });
-  }
-  next();
-};
-
-// Middleware to check if user is an admin
-export const requireAdmin = (req, res, next) => {
-  if (req.session?.user?.role !== "admin") {
-    return res.status(403).json({ error: "Forbidden: Admin access required" });
-  }
-  next();
-};
+// Role-specific convenience middlewares
+export const requireVendor = requireRole(["vendor"]);
+export const requireCustomer = requireRole(["customer"]);
+export const requireAdmin = requireRole(["admin"]);

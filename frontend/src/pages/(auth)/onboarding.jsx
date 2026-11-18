@@ -34,7 +34,7 @@ export default function Onboarding() {
       const data = await response.json();
       
       if (!response.ok) {
-        setError(data.error || "Failed to set role.");
+        setError(data.message || data.error || "Failed to set role.");
         return;
       }
       

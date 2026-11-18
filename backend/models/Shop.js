@@ -4,7 +4,9 @@ const shopSchema = new mongoose.Schema(
   {
     vendorId: { type: String, required: true, unique: true },
     shopName: { type: String, required: true },
-    description: { type: String },
+    description: { type: String, default: "" },
+    isActive: { type: Boolean, default: true },
+    balance: { type: Number, default: 0 },
     logoUrl: { type: String },
     stripeAccountId: { type: String },
   },
