@@ -51,7 +51,7 @@ const validateProductFields = (body, { partial = false } = {}) => {
 };
 
 // GET /api/products: Public. Accepts query parameters (page, limit, category, vendorId).
-// Filters out products from inactive shops per SRS 3.2.
+// Filters out products from inactive or suspended shops.
 router.get("/", async (req, res, next) => {
   try {
     const { category, vendorId } = req.query;

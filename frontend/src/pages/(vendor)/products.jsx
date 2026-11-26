@@ -205,7 +205,6 @@ export default function VendorProducts() {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-white">
@@ -230,7 +229,6 @@ export default function VendorProducts() {
         </div>
       )}
 
-      {/* Search & Stock Filter Toolbar */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative w-full sm:max-w-xs">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
@@ -265,7 +263,6 @@ export default function VendorProducts() {
         </div>
       </div>
 
-      {/* Products Table */}
       <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 overflow-hidden">
         {filteredProducts.length === 0 ? (
           <div className="p-12 text-center">
@@ -369,7 +366,6 @@ export default function VendorProducts() {
         )}
       </div>
 
-      {/* Add / Edit Product Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto">
           <div className="relative w-full max-w-lg rounded-xl border border-zinc-200 bg-white p-6 shadow-xl dark:border-zinc-800 dark:bg-zinc-950 my-8">

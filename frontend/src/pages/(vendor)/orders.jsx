@@ -126,7 +126,6 @@ export default function VendorOrders() {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-white">
@@ -163,7 +162,6 @@ export default function VendorOrders() {
         </div>
       )}
 
-      {/* Toolbar: Search & Status Filters */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative w-full sm:max-w-xs">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
@@ -193,7 +191,6 @@ export default function VendorOrders() {
         </div>
       </div>
 
-      {/* Orders List */}
       {filteredOrders.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-zinc-200 bg-white p-12 text-center dark:border-zinc-800 dark:bg-zinc-950">
           <div className="mb-4 rounded-full bg-zinc-100 p-4 dark:bg-zinc-900">
@@ -223,7 +220,6 @@ export default function VendorOrders() {
                 key={order._id}
                 className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 transition-all hover:border-zinc-300 dark:hover:border-zinc-700"
               >
-                {/* Order Top Bar */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-zinc-100 dark:border-zinc-800">
                   <div className="flex items-center gap-3">
                     <span className="font-mono text-xs font-semibold text-zinc-900 dark:text-white">
@@ -250,7 +246,6 @@ export default function VendorOrders() {
                     </span>
                   </div>
 
-                  {/* Bulk update for this order's items */}
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-zinc-500">Update status:</span>
                     <select
@@ -269,7 +264,6 @@ export default function VendorOrders() {
                   </div>
                 </div>
 
-                {/* Items in this order */}
                 <div className="py-4 space-y-3">
                   {vendorItems.map((item, idx) => (
                     <div
@@ -316,7 +310,6 @@ export default function VendorOrders() {
                   ))}
                 </div>
 
-                {/* Order Summary Footer */}
                 <div className="flex items-center justify-between pt-3 border-t border-zinc-100 dark:border-zinc-800 text-xs">
                   <span className="text-zinc-500">
                     Customer ID: <span className="font-mono text-zinc-700 dark:text-zinc-300">{order.customerId}</span>

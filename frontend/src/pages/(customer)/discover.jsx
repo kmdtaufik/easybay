@@ -46,14 +46,7 @@ export default function Discover() {
     }
   };
 
-  const dummyProducts = [
-    { _id: "dummy1", title: "Matte Black Desk Mat", price: 34.99, vendorId: "Studio Works", images: ["https://images.unsplash.com/photo-1628126235206-5260b9ea6441?auto=format&fit=crop&q=80&w=600"] },
-    { _id: "dummy2", title: "Ergonomic Aluminum Stand", price: 59.00, vendorId: "Elevation", images: ["https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=600"] },
-    { _id: "dummy3", title: "Minimalist Wall Clock", price: 120.00, vendorId: "Timepiece Co", images: ["https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&q=80&w=600"] },
-    { _id: "dummy4", title: "Ceramic Pour-Over Dripper", price: 45.50, vendorId: "Brewed", images: ["https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=600"] },
-  ];
-
-  const displayProducts = products.length > 0 ? products : dummyProducts;
+  const displayProducts = products;
 
   return (
     <>
@@ -116,7 +109,7 @@ export default function Discover() {
                     size="icon" 
                     variant="secondary"
                     onClick={() => handleAddToCart(p._id)}
-                    disabled={addingToCart === p._id || p._id.startsWith('dummy')}
+                    disabled={addingToCart === p._id}
                     className="absolute bottom-3 right-3 opacity-0 shadow-sm transition-all group-hover:opacity-100 hover:scale-105 disabled:opacity-50"
                   >
                     {addingToCart === p._id ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShoppingCart className="h-4 w-4" />}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession, authClient } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Store, ShoppingBag, Loader2 } from "lucide-react";
+import { Store, ShoppingBag, ShieldAlert, Loader2 } from "lucide-react";
 
 export default function Onboarding() {
   const navigate = useNavigate();
@@ -14,7 +14,9 @@ export default function Onboarding() {
     if (!isPending && !session) {
       navigate("/login");
     } else if (session?.user?.role) {
-      navigate("/dashboard");
+      if (session.user.role === "admin") navigate("/admin");
+      else if (session.user.role === "vendor") navigate("/vendor");
+      else navigate("/dashboard");
     }
   }, [session, isPending, navigate]);
 
@@ -28,20 +30,22 @@ export default function Onboarding() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ role }),
-        credentials: "include", // Essential for sending Better Auth session cookies
+        credentials: "include",
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         setError(data.message || data.error || "Failed to set role.");
         return;
       }
-      
+
       if (data.success) {
         // Refetch session so the authClient has the latest role
         await authClient.getSession();
-        navigate("/dashboard");
+        if (role === "admin") navigate("/admin");
+        else if (role === "vendor") navigate("/vendor");
+        else navigate("/dashboard");
       }
     } catch (err) {
       console.error("Error setting role:", err);
@@ -61,12 +65,12 @@ export default function Onboarding() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white p-4 dark:bg-zinc-950">
-      <div className="w-full max-w-2xl text-center">
+      <div className="w-full max-w-3xl text-center">
         <h1 className="mb-2 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">
           Welcome to EasyBay
         </h1>
         <p className="mb-8 text-zinc-500 dark:text-zinc-400">
-          To give you the best experience, please tell us how you plan to use the platform.
+          To give you the best experience, please select your primary account role.
         </p>
 
         {error && (
@@ -75,23 +79,23 @@ export default function Onboarding() {
           </div>
         )}
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-3">
           {/* Customer Option */}
           <button
             onClick={() => selectRole("customer")}
             disabled={loadingRole !== null}
-            className={`group relative flex flex-col items-center rounded-xl border border-zinc-200 bg-white p-8 text-center transition-all hover:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-white ${
+            className={`group relative flex flex-col items-center rounded-xl border border-zinc-200 bg-white p-6 text-center transition-all hover:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-white ${
               loadingRole === "customer" ? "border-zinc-900 dark:border-white" : ""
             }`}
           >
             <div className="mb-4 rounded-full bg-zinc-100 p-4 dark:bg-zinc-900">
-              <ShoppingBag className="h-8 w-8 text-zinc-900 dark:text-white" />
+              <ShoppingBag className="h-7 w-7 text-zinc-900 dark:text-white" />
             </div>
-            <h2 className="mb-2 text-xl font-medium text-zinc-950 dark:text-white">
-              I want to Buy
+            <h2 className="mb-2 text-lg font-semibold text-zinc-950 dark:text-white">
+              Customer
             </h2>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              Browse products, track orders, and shop from hundreds of independent vendors.
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Browse products, track orders, and shop from multiple independent vendors.
             </p>
             {loadingRole === "customer" && (
               <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/50 backdrop-blur-sm dark:bg-zinc-950/50">
@@ -104,20 +108,44 @@ export default function Onboarding() {
           <button
             onClick={() => selectRole("vendor")}
             disabled={loadingRole !== null}
-            className={`group relative flex flex-col items-center rounded-xl border border-zinc-200 bg-white p-8 text-center transition-all hover:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-white ${
+            className={`group relative flex flex-col items-center rounded-xl border border-zinc-200 bg-white p-6 text-center transition-all hover:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-white ${
               loadingRole === "vendor" ? "border-zinc-900 dark:border-white" : ""
             }`}
           >
             <div className="mb-4 rounded-full bg-zinc-100 p-4 dark:bg-zinc-900">
-              <Store className="h-8 w-8 text-zinc-900 dark:text-white" />
+              <Store className="h-7 w-7 text-zinc-900 dark:text-white" />
             </div>
-            <h2 className="mb-2 text-xl font-medium text-zinc-950 dark:text-white">
-              I want to Sell
+            <h2 className="mb-2 text-lg font-semibold text-zinc-950 dark:text-white">
+              Vendor
             </h2>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              Set up a storefront, manage inventory, and reach millions of customers.
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Set up a storefront, manage inventory, track order fulfillment, and earn 90% revenue.
             </p>
             {loadingRole === "vendor" && (
+              <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/50 backdrop-blur-sm dark:bg-zinc-950/50">
+                <Loader2 className="h-6 w-6 animate-spin text-zinc-900 dark:text-white" />
+              </div>
+            )}
+          </button>
+
+          {/* Admin Option */}
+          <button
+            onClick={() => selectRole("admin")}
+            disabled={loadingRole !== null}
+            className={`group relative flex flex-col items-center rounded-xl border border-zinc-200 bg-white p-6 text-center transition-all hover:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-white ${
+              loadingRole === "admin" ? "border-zinc-900 dark:border-white" : ""
+            }`}
+          >
+            <div className="mb-4 rounded-full bg-zinc-100 p-4 dark:bg-zinc-900">
+              <ShieldAlert className="h-7 w-7 text-zinc-900 dark:text-white" />
+            </div>
+            <h2 className="mb-2 text-lg font-semibold text-zinc-950 dark:text-white">
+              Administrator
+            </h2>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Platform administration, approve or suspend vendor stores, and inspect global orders.
+            </p>
+            {loadingRole === "admin" && (
               <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/50 backdrop-blur-sm dark:bg-zinc-950/50">
                 <Loader2 className="h-6 w-6 animate-spin text-zinc-900 dark:text-white" />
               </div>

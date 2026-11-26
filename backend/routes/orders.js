@@ -6,7 +6,7 @@ const router = express.Router();
 
 const VALID_FULFILLMENT_STATUSES = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
 
-// GET /api/orders: Role-dependent per SRS 4.3
+// GET /api/orders: Role-dependent
 // Customers receive their own orders; Vendors receive orders containing their items; Admins receive all.
 router.get("/", requireAuth, async (req, res, next) => {
   try {
@@ -76,7 +76,7 @@ router.get("/:id", requireAuth, async (req, res, next) => {
   }
 });
 
-// PATCH /api/orders/:id/status: Vendor only per SRS 3.4 & 4.3
+// PATCH /api/orders/:id/status: Vendor only
 // Updates the fulfillment state for the vendor's specific items within the order.
 router.patch("/:id/status", requireAuth, requireRole(["vendor"]), async (req, res, next) => {
   try {

@@ -57,7 +57,6 @@ export default function VendorDashboard() {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-white">
@@ -83,7 +82,6 @@ export default function VendorDashboard() {
         </div>
       )}
 
-      {/* Shop Status Banner */}
       <div className="mb-8 flex flex-col justify-between gap-4 rounded-xl border border-zinc-200 bg-white p-5 sm:flex-row sm:items-center dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
@@ -116,7 +114,6 @@ export default function VendorDashboard() {
         </Link>
       </div>
 
-      {/* KPI Cards */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
         <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">
           <div className="flex items-center justify-between mb-4">
@@ -163,7 +160,6 @@ export default function VendorDashboard() {
         </div>
       </div>
 
-      {/* Recent Orders Table */}
       <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
           <div>

@@ -10,6 +10,7 @@ import cartRoutes from "./routes/cart.js";
 import adminRoutes from "./routes/admin.js";
 import orderRoutes from "./routes/orders.js";
 import vendorRoutes from "./routes/vendor.js";
+import checkoutRoutes from "./routes/checkout.js";
 import { ensureShop, backfillShops } from "./utils/shop.js";
 
 dotenv.config();
@@ -31,11 +32,12 @@ app.use(express.json());
 // Mount routers
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/checkout", checkoutRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/vendor", vendorRoutes);
 app.use("/api/admin", adminRoutes);
 
-// Vendor & Customer Onboarding: Updates user role and initializes Shop entity for vendors (SRS 3.2)
+// User onboarding: assigns user role and initializes vendor shop
 app.post("/api/onboarding", async (req, res, next) => {
   try {
     const session = await auth.api.getSession({
@@ -46,7 +48,7 @@ app.post("/api/onboarding", async (req, res, next) => {
     }
 
     const { role } = req.body;
-    if (role !== "vendor" && role !== "customer") {
+    if (role !== "vendor" && role !== "customer" && role !== "admin") {
       return res.status(400).json({ success: false, message: "Invalid role" });
     }
 
@@ -70,7 +72,7 @@ app.post("/api/onboarding", async (req, res, next) => {
       }
     }
 
-    // SRS 3.2: Upon vendor registration, the system must create a corresponding Shop entity linked to the user's ID
+    // Initialize shop entity for new vendors
     if (role === "vendor") {
       await ensureShop(session.user.id, session.user.name);
     }
@@ -87,7 +89,7 @@ app.get("/", (req, res) => {
   res.send("Multi-Vendor E-Commerce Backend is Running!");
 });
 
-// Centralized Express Global Error Handler (SRS 7.4)
+// Centralized Express error handler
 app.use((err, req, res, next) => {
   console.error("Global error handler caught:", err);
   let status = err.status || err.statusCode || 500;

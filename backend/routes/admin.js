@@ -47,21 +47,39 @@ router.patch("/shops/:id/status", async (req, res, next) => {
   }
 });
 
-// GET /api/admin/stats: Platform overview
+// GET /api/admin/orders: List all platform orders
+router.get("/orders", async (req, res, next) => {
+  try {
+    const orders = await Order.find()
+      .populate("items.productId")
+      .sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET /api/admin/stats: Platform overview with financial totals
 router.get("/stats", async (req, res, next) => {
   try {
-    const [totalShops, activeShops, totalProducts, totalOrders] = await Promise.all([
+    const [totalShops, activeShops, totalProducts, allOrders] = await Promise.all([
       Shop.countDocuments(),
       Shop.countDocuments({ isActive: true }),
       Product.countDocuments(),
-      Order.countDocuments(),
+      Order.find().select("totalAmount paymentStatus"),
     ]);
+
+    const paidOrders = allOrders.filter((o) => o.paymentStatus === "paid");
+    const totalVolume = paidOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const platformCommission = totalVolume * 0.1;
 
     res.json({
       totalShops,
       activeShops,
       totalProducts,
-      totalOrders,
+      totalOrders: allOrders.length,
+      totalVolume,
+      platformCommission,
     });
   } catch (error) {
     next(error);

@@ -42,7 +42,7 @@ router.get("/stats", async (req, res, next) => {
       });
 
       if (order.paymentStatus === "paid") {
-        // 90% vendor payout per SRS 3.5
+        // 90% vendor payout calculation
         calculatedRevenue += vendorSubtotal * 0.9;
       }
 

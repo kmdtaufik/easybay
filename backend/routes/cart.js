@@ -23,7 +23,7 @@ router.get("/", requireAuth, requireCustomer, async (req, res, next) => {
 });
 
 // POST add item to cart
-// Enforces SRS 3.3: Reject cart additions if stock is 0
+// Reject cart additions if stock is 0
 router.post("/", requireAuth, requireCustomer, async (req, res, next) => {
   try {
     const { productId, quantity = 1 } = req.body;

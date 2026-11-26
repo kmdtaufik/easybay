@@ -26,6 +26,8 @@ export default function VendorLayout() {
         navigate("/onboarding");
       } else if (session.user.role === "customer") {
         navigate("/dashboard");
+      } else if (session.user.role === "admin") {
+        navigate("/admin");
       } else if (location.pathname === "/vendor") {
         navigate("/vendor/dashboard");
       }

@@ -138,7 +138,6 @@ export default function VendorSettings() {
 
   return (
     <div className="max-w-4xl space-y-10">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-white">
           Store Settings & Financials
@@ -148,7 +147,6 @@ export default function VendorSettings() {
         </p>
       </div>
 
-      {/* Section 1: Financial Ledger & Payouts */}
       <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">
         <div className="mb-6 flex items-center justify-between">
           <div>
@@ -180,7 +178,7 @@ export default function VendorSettings() {
           <div className="rounded-lg border border-zinc-200 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-900/50">
             <div className="text-xs font-medium text-zinc-500">Payout Processing</div>
             <div className="mt-1 text-2xl font-bold font-mono text-zinc-900 dark:text-white">Instant / 24h</div>
-            <div className="mt-1 text-xs text-zinc-400">Stripe automated payouts</div>
+            <div className="mt-1 text-xs text-zinc-400">Standard vendor payouts</div>
           </div>
         </div>
 
@@ -201,7 +199,6 @@ export default function VendorSettings() {
           </div>
         )}
 
-        {/* Payout Request Box */}
         <form onSubmit={handleRequestPayout} className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
           <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Request a Balance Withdrawal</h3>
           <div className="flex flex-col sm:flex-row gap-3">
@@ -256,7 +253,6 @@ export default function VendorSettings() {
 
       <Separator className="bg-zinc-200 dark:bg-zinc-800" />
 
-      {/* Section 2: Storefront Profile */}
       <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">
         <div className="mb-6 flex items-center justify-between">
           <div>

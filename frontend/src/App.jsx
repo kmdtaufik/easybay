@@ -19,17 +19,23 @@ import VendorProducts from "./pages/(vendor)/products";
 import VendorOrders from "./pages/(vendor)/orders";
 import VendorSettings from "./pages/(vendor)/settings";
 
+// Admin Dashboard
+import AdminLayout from "./pages/(admin)/layout";
+import AdminDashboard from "./pages/(admin)/dashboard";
+import AdminVendors from "./pages/(admin)/vendors";
+import AdminOrders from "./pages/(admin)/orders";
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
-        
+
         {/* Auth Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/onboarding" element={<Onboarding />} />
-        
+
         {/* Protected Dashboard Route (Customer) */}
         <Route path="/dashboard" element={<CustomerLayout />}>
           <Route index element={<Navigate to="discover" replace />} />
@@ -47,6 +53,14 @@ export default function App() {
           <Route path="products" element={<VendorProducts />} />
           <Route path="orders" element={<VendorOrders />} />
           <Route path="settings" element={<VendorSettings />} />
+        </Route>
+
+        {/* Protected Dashboard Route (Admin) */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="vendors" element={<AdminVendors />} />
+          <Route path="orders" element={<AdminOrders />} />
         </Route>
       </Routes>
     </BrowserRouter>
